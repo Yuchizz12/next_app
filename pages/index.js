@@ -1,65 +1,66 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 
 export default function Home() {
+  const Container = styled.div`
+    display: flex;
+    width: 500px;
+  `
+
+  const list = styled.div`
+    display: flex;
+  `
+
+  const Frame = styled.div`
+    width: 400px;
+    height: 300px;
+  `
+
+  const Title = styled.div`
+    position: fixed;
+    top: 0px;
+  `
+  // react Hook For State Handler
+  const [data, setData] = useState({  data: [] })
+
+  // Fetch Function
+  useEffect(() => {
+    if (!data) return
+    fetch('./data.json')
+      .then(function (res) {
+        return res.json()
+      })
+      .then(function (data) {
+        // store Data in State Data Variable
+        setData(data)
+      })
+      .catch(function (err) {
+        console.log(err, ' error')
+      })
+  }, [data])
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+    // <div className="">
+    <>
+      <Title>title</Title>
+      <Title> {data.locationName}</Title>
+      <Container>
+        {
+          // use data State Variable For Get Data Use JavaScript Map Mathod
+          data &&
+            data.data.map((data, key) => {
+              return (
+                <Frame key={key}>
+                  <Frame key={key}>
+                    {data.name && <ul>{data.name}</ul>}
+                    {data.mail && <ul>{data.mail}</ul>}
+                    {data.age && <ul>{data.age}</ul>}
+                  </Frame>
+                </Frame>
+              )
+            })
+        }
+      </Container>
+    </>
   )
 }
